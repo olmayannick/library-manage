@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import simpledialog, messagebox
 
-
+# Dosya işlemleri ve kütüphane sınıfı
 def is_integer(n):
     try:
         int(n)
@@ -17,6 +17,7 @@ class Library:
     def __del__(self):
         self.save_books()
 
+# Dosyadan kitapları yükleme ve kaydetme
     def load_books(self):
         try:
             with open(self.filepath, 'a+') as file:
@@ -25,7 +26,9 @@ class Library:
             return books
         except FileNotFoundError:
             return []
+        
 
+# Kitap ekleme, silme ve listeleme
     def save_books(self):
         with open(self.filepath, 'w') as file:
             for book in self.books:
@@ -37,7 +40,6 @@ class Library:
             return
         self.books.append([name, author, release_date, pages])
         
-
     def remove_book(self, index):
         try:
             index = int(index) - 1  
@@ -67,6 +69,7 @@ class LibraryApp:
         tk.Button(master, text="Kitap Sil", command=self.remove_book, width=20, height=2, bg='white', fg='black').pack(pady=5)
         tk.Button(master, text="Kitapları Listele", command=self.library.list_books, width=20, height=2, bg='white', fg='black').pack(pady=5)
 
+# Kitap ekleme ekranı
     def add_book_screen(self):
         self.add_book_window = tk.Toplevel(self.master)
         self.add_book_window.title("Kitap Ekleme Ekranı")
@@ -90,6 +93,7 @@ class LibraryApp:
 
         tk.Button(self.add_book_window, text="Kaydet", command=self.save_book).pack(pady=10)
 
+# Kitap ekleme fonksiyonu
     def save_book(self):
         name = self.book_name_entry.get()
         author = self.author_name_entry.get()
@@ -102,6 +106,7 @@ class LibraryApp:
         else:
             messagebox.showerror("Hata", "Geçersiz giriş. Lütfen tüm alanların doğru doldurulduğundan emin olun.")
 
+# Kitap silme ekranı
     def remove_book(self):
         index = simpledialog.askstring("Kitap Sil", "Kaldırmak için index i giriniz:")
         if index and index.isdigit():
@@ -110,9 +115,10 @@ class LibraryApp:
         else:
             messagebox.showerror("Hata", "Geçersiz index.")
 
+# Uygulama başlatma 
 def main():
     root = tk.Tk()
-    library = Library('books.txt')  # Library sınıfının daha önce tanımlandığını varsayıyoruz.
+    library = Library('books.txt') 
     app = LibraryApp(root, library)
     root.mainloop()
 
